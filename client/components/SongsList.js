@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import { Link } from 'react-router';
 
 // Queries
@@ -21,7 +21,7 @@ class SongsList extends Component {
   render() {
     const { loading } = this.props.data;
 
-    if(loading) { return <div>Loading...</div>; }
+    if(loading) { return <div className="loading">Loading</div>; }
     return (
       <div>
         <ul className="collection">
@@ -33,4 +33,12 @@ class SongsList extends Component {
   }
 }
 
-export default graphql(fetchSongs)(SongsList);
+const deleteSong = gql`
+mutation DeleteSong($id: ID) {
+  deleteSong(id: $id) {
+    id
+  }
+}
+`;
+
+export default compose(graphql(fetchSongs), graphql(deleteSong, { name: 'deleteSong'}))(SongsList);
