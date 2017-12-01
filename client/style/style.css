@@ -34,6 +34,16 @@
   }
 }
 
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
 .loading {
   backface-visibility: hidden;
 }
@@ -44,4 +54,10 @@
   color: lightskyblue;
   animation: 1s changeSize infinite;
   font-size: 32px;
+}
+
+.fade {
+  cursor: pointer;
+  animation: 1s .2s fade ease-in;
+  animation-fill-mode: backwards;
 }
