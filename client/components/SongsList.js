@@ -4,7 +4,7 @@ import { graphql, compose } from 'react-apollo';
 import { Link } from 'react-router';
 
 // Queries
-import fetchSongs from '../queries/fetchSongs';
+import {fetchSongs} from '../queries/fetchSongs';
 
 class SongsList extends Component {
 
