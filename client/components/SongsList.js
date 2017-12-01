@@ -22,8 +22,10 @@ class SongsList extends Component {
     return songs.map(({id, title}) => {
       return (
         <li key={id} className="collection-item">
-        <span className="animated__item">{title}</span>
-        <i className="material-icons right fade" onClick={() => this.onSongDelete(id)}>delete</i>
+          <span className="animated__item">
+            <Link to={`songs/${id}`}>{title}</Link>
+          </span>
+          <i className="material-icons right fade" onClick={() => this.onSongDelete(id)}>delete</i>
         </li>
       );
     });

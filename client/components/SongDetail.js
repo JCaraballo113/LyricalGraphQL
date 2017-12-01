@@ -1,14 +1,36 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
+import { Link } from 'react-router';
 import { fetchSong } from '../queries/fetchSongs';
+
+// Components
+import LyricCreate from './LyricCreate';
 
 class SongDetail extends Component {
   render() {
+    const { song } = this.props.data;
+
+    if (!song) {
+      return <div>Loading...</div>;
+    }
+
     return(
-      <h3>Song Detail</h3>
+      <div>
+        <Link to="/">Back</Link>
+        <h3>{song.title}</h3>
+        <LyricCreate songId={song.id}/>
+      </div>
     );
   }
 }
 
-export default graphql(fetchSong)(SongDetail);
+export default graphql(fetchSong, {
+  options: (props) => {
+    return {
+      variables: {
+        id: props.params.id
+      }
+    };
+  }
+})(SongDetail);
