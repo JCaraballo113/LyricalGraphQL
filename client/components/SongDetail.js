@@ -6,6 +6,7 @@ import { fetchSong } from '../queries/fetchSongs';
 
 // Components
 import LyricCreate from './LyricCreate';
+import LyricList from './LyricsList';
 
 class SongDetail extends Component {
   render() {
@@ -19,6 +20,7 @@ class SongDetail extends Component {
       <div>
         <Link to="/">Back</Link>
         <h3>{song.title}</h3>
+        <LyricList lyrics={song.lyrics}/>
         <LyricCreate songId={song.id}/>
       </div>
     );

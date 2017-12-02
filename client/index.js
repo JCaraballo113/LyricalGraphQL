@@ -13,7 +13,9 @@ import SongsList from './components/SongsList';
 import SongCreate from './components/SongCreate';
 import SongDetail from './components/SongDetail';
 
-const client = new ApolloClient({});
+const client = new ApolloClient({
+  dataIdFromObject: o => o.id
+});
 
 ReactDOM.render(
   <ApolloProvider client={client}>
