@@ -17,6 +17,7 @@ query Song($id: ID!) {
     lyrics {
       id
       content
+      likes
     }
   }
 }
