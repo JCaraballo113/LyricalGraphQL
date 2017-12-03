@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
+import { graphql, compose } from 'react-apollo';
+import { fetchSong } from '../queries/fetchSongs';
+import { likeLyricMutation, deleteLyricMutation } from '../mutations/lyricMutations';
 
 class LyricsList extends Component {
 
@@ -18,13 +19,28 @@ class LyricsList extends Component {
     });
   }
 
+  onDelete(id) {
+    this.props.deleteLyric({
+      variables: { id },
+      refetchQueries: [{ query: fetchSong, variables: { id: this.props.songId } }],
+      optimisticResponse: {
+        __typename: 'Mutation',
+        deleteLyric: {
+          __typename: 'LyricType',
+          id: null
+        }
+      }
+    });
+  }
+
   renderLyrics() {
     return this.props.lyrics.map(({id, content, likes}) => {
       return <li key={id} className="collection-item">
         <span className="animated__item">{content}</span>
         <div className="vote-box">
-          <i className="material-icons right fade" onClick={() => this.onLike(id, likes)}>thumb_up</i>
           {likes}
+          <i className="material-icons right fade" onClick={() => this.onLike(id, likes)}>thumb_up</i>
+          <i className="material-icons right fade" onClick={() => this.onDelete(id)}>delete</i>
         </div>
       </li>;
     });
@@ -39,15 +55,8 @@ class LyricsList extends Component {
   }
 }
 
-const mutation = gql`
-mutation LikeLyric($id: ID) {
-  likeLyric(id: $id) {
-    id
-    likes
-  }
-}
-`;
-
-export default graphql(mutation, {
+export default compose(graphql(likeLyricMutation, {
   name: 'likeLyric'
-})(LyricsList);
+}), graphql(deleteLyricMutation, {
+  name: 'deleteLyric'
+}))(LyricsList);
