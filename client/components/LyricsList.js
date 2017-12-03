@@ -4,8 +4,18 @@ import gql from 'graphql-tag';
 
 class LyricsList extends Component {
 
-  onLike(id) {
-    this.props.likeLyric({ variables: { id } });
+  onLike(id, likes) {
+    this.props.likeLyric({ 
+      variables: { id },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        likeLyric: {
+          id,
+          __typename: 'LyricType',
+          likes: likes + 1
+        }
+      }
+    });
   }
 
   renderLyrics() {
@@ -13,7 +23,7 @@ class LyricsList extends Component {
       return <li key={id} className="collection-item">
         <span className="animated__item">{content}</span>
         <div className="vote-box">
-          <i className="material-icons right fade" onClick={() => this.onLike(id)}>thumb_up</i>
+          <i className="material-icons right fade" onClick={() => this.onLike(id, likes)}>thumb_up</i>
           {likes}
         </div>
       </li>;
